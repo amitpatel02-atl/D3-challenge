@@ -32,15 +32,13 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     // Print the healthdata
     console.log(healthdata);
 
-    // Step 1: Parse Data/Cast as numbers
-    // ==============================
+    // Parse Data/Cast as numbers
     healthdata.forEach(function(data) {
       data.healthcare = +data.healthcare;
       data.poverty = +data.poverty;
     });
 
-    // Step 2: Create scale functions
-    // ==============================
+    // Create scale functions
     var xLinearScale = d3.scaleLinear()
       .domain([8, d3.max(healthdata, d => d.poverty)])
       .range([0, width]);
@@ -49,13 +47,11 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
       .domain([0, d3.max(healthdata, d => d.healthcare)])
       .range([height, 0]);
 
-    // Step 3: Create axis functions
-    // ==============================
+    // Create axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
-    // Step 4: Append Axes to the chart
-    // ==============================
+    // Append Axes to the chart
     chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
@@ -63,8 +59,7 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     chartGroup.append("g")
       .call(leftAxis);
 
-    // Step 5: Create Circles
-    // ==============================
+    // Create Circles
     var circlesGroup = chartGroup.selectAll("circle")
     .data(healthdata)
     .enter()
@@ -75,8 +70,7 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     .attr("fill", "blue")
     .attr("opacity", ".4");
   
-    // Step 6: Initialize tool tip
-    // ==============================
+    // Initialize tool tip
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([80, -60])
@@ -84,12 +78,10 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
         return (`${d.state}<br>Poverty: ${d.poverty}<br>Healthcare: ${d.healthcare}`);
       });
 
-    // Step 7: Create tooltip in the chart
-    // ==============================
+    // Create tooltip in the chart
     chartGroup.call(toolTip);
 
-    // Step 8: Create event listeners to display and hide the tooltip
-    // ==============================
+    // Create event listeners to display and hide the tooltip
     circlesGroup.on("mouseover", function(data) {
       toolTip.show(data, this);
     })
@@ -98,7 +90,7 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
         toolTip.hide(data);
       });
 
-    // Create variable for create circle labels to display initials
+    // Create variable for create circle labels to display state initials
     var circleLabels = chartGroup.selectAll(null).data(healthdata).enter().append("text");
     
     circleLabels
