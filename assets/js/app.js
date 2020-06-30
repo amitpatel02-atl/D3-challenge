@@ -67,12 +67,12 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
     .attr("r", "15")
-    .attr("fill", "blue")
+    .attr("fill", "red")
     .attr("opacity", ".4");
   
     // Initialize tool tip
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
+      .attr("class", "d3-tip")
       .offset([80, -60])
       .html(function(d) {
         return (`${d.state}<br>Poverty: ${d.poverty}<br>Healthcare: ${d.healthcare}`);
@@ -84,10 +84,12 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     // Create event listeners to display and hide the tooltip
     circlesGroup.on("mouseover", function(data) {
       toolTip.show(data, this);
+      d3.select(this).style("stroke", "#323232")
     })
       // onmouseout event
       .on("mouseout", function(data, index) {
         toolTip.hide(data);
+        d3.select(this).style("stroke","#e3e3e3")
       });
 
     // Create variable for create circle labels to display state initials
@@ -106,7 +108,7 @@ d3.csv("assets/data/data.csv").then(function(healthdata){
     .attr("font-family", "sans-serif")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .attr("fill", "white");
+    .attr("fill", "black");
 
     // Create axes labels
     chartGroup.append("text")
